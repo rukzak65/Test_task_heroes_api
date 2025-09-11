@@ -39,3 +39,13 @@ def test_tallest_female_with_work_counts_unknown_as_work():
     assert res is not None
     assert res["id"] == 9
     assert res["height_cm"] == 6100
+
+def test_equal_heights_choose_first(): # Проверка на показ только первого
+    equal_list = [
+        {"id": 101, "name": "A", "appearance": {"gender": "Male", "height": ["6'6", "198 cm"]}, "work": {"occupation": "X"}},
+        {"id": 102, "name": "B", "appearance": {"gender": "Male", "height": ["6'6", "198 cm"]}, "work": {"occupation": "X"}},
+    ]
+    res = get_tallest_hero("male", False, heroes=equal_list)
+    assert res is not None
+    assert res["id"] == 101
+    assert res["height_cm"] == 198
