@@ -9,41 +9,41 @@ def parse_height_cm(height_field):
     if not val.endswith("cm"):
         return None
     try:
-        num = int(val.replace("cm", "").strip())
-        return num if num > 0 else None
+        num = int(val.replace("cm", "").strip())         # "203 cm" -> "203"
     except Exception:
         return None
 
+    if num <= 0:
+        return None
+    return num
 
-def get_tallest_hero(gender: str, has_work: bool = False, heroes: list = None):
-
+def get_tallest_hero(gender, has_work=False, heroes=None):
     if heroes is None:
         resp = requests.get(API_URL, timeout=10)
         if resp.status_code != 200:
             raise RuntimeError("Не удалось получить данные от API")
         heroes = resp.json()
 
-    tallest = None
+    if not isinstance(gender, str):
+        raise ValueError("gender must be a string 'male' or 'female'")
+    target_gender = gender.lower()
 
+    tallest = None
     for h in heroes:
-        # фильтрация по полу
-        if h.get("appearance", {}).get("gender", "").lower() != gender.lower():
+        appearance = h.get("appearance") or {}
+        hero_gender = appearance.get("gender", "")
+        if not isinstance(hero_gender, str) or hero_gender.lower() != target_gender:
             continue
 
-        # фильтрация по работе
         occupation = (h.get("work") or {}).get("occupation")
         if has_work and (not occupation or occupation.strip() in ["-", ""]):
             continue
 
-        # рост
-        height_cm = parse_height_cm(h.get("appearance", {}).get("height"))
+        height_cm = parse_height_cm(appearance.get("height"))
         if height_cm is None:
             continue
 
-        # выбираем самого высокого
         if tallest is None or height_cm > tallest["height_cm"]:
             tallest = {"id": h.get("id"), "name": h.get("name"), "height_cm": height_cm}
 
     return tallest
-
-
