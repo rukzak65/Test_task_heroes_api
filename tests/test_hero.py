@@ -50,3 +50,23 @@ def test_equal_heights_choose_first(): #должен вернуть только
     assert res["id"] == 101
     assert res["height_cm"] == 198
 
+def test_invalid_and_missing_fields_do_not_break():
+    broken = [
+        {"id": 201, "name": "Broken1", "appearance": None, "work": {"occupation": "X"}},
+        {"id": 202, "name": "Broken2", "appearance": {"gender": "Male"}, "work": None},
+        {"id": 203, "name": "Valid", "appearance": {"gender": "Male", "height": ["6'1", "185 cm"]}, "work": {"occupation": "X"}},
+    ]
+    res = get_tallest_hero("male", False, heroes=broken)
+    assert res is not None
+    assert res["id"] == 203
+    assert res["height_cm"] == 185
+
+def test_no_matching_returns_none_empty_or_wrong_gender():
+    assert get_tallest_hero("male", False, heroes=[]) is None
+    assert get_tallest_hero("alien", False, heroes=TEST_DATA) is None
+
+def test_zero_and_invalid_height_ignored():
+    res = get_tallest_hero("male", True, heroes=TEST_DATA)
+    assert res is not None
+    assert res["id"] != 5
+
