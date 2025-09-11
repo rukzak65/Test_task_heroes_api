@@ -3,3 +3,6 @@
 
 ## Содержание проекта:
 - `requirements.txt` — зависимости. Установка: `pip install -r requirements.txt`
+
+
+- `python -m pytest -s` — запуск тестов
