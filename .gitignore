@@ -1,0 +1,35 @@
+# created by virtualenv automatically
+.venv/Lib
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# PyCharm
+.idea/
+
+# pytest
+.pytest_cache/
+
+# Environment variables
+.env
+*.env
+
+# Logs, DB, caches
+*.log
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
