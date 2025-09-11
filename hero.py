@@ -42,7 +42,7 @@ def get_tallest_hero(gender: str, has_work: bool = False, heroes: list = None):
 
         # выбираем самого высокого
         if tallest is None or height_cm > tallest["height_cm"]:
-            tallest = {"name": h.get("name"), "height_cm": height_cm}
+            tallest = {"id": h.get("id"), "name": h.get("name"), "height_cm": height_cm}
 
     return tallest
 
