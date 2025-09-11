@@ -14,6 +14,7 @@ TEST_DATA = [
     {"id": 10, "name": "NoAppearance", "work": {"occupation": "None"}},
 ]
 
+
 def test_tallest_male_without_work():
     res = get_tallest_hero("male", False, heroes=TEST_DATA)
     assert res is not None
@@ -30,17 +31,16 @@ def test_tallest_male_with_work():
 def test_tallest_female_without_work():
     res = get_tallest_hero("female", False, heroes=TEST_DATA)
     assert res is not None
-    # id 9 самый высокий
-    assert res["id"] == 9
-    assert res["height_cm"] == 6100
+    assert res["id"] == 7
+    assert res["height_cm"] == 188
 
 def test_tallest_female_with_work_counts_unknown_as_work():
     res = get_tallest_hero("female", True, heroes=TEST_DATA)
     assert res is not None
-    assert res["id"] == 9
-    assert res["height_cm"] == 6100
+    assert res["id"] == 7
+    assert res["height_cm"] == 188
 
-def test_equal_heights_choose_first(): # Проверка на показ только первого
+def test_equal_heights_choose_first(): #должен вернуть только 1
     equal_list = [
         {"id": 101, "name": "A", "appearance": {"gender": "Male", "height": ["6'6", "198 cm"]}, "work": {"occupation": "X"}},
         {"id": 102, "name": "B", "appearance": {"gender": "Male", "height": ["6'6", "198 cm"]}, "work": {"occupation": "X"}},
@@ -49,3 +49,4 @@ def test_equal_heights_choose_first(): # Проверка на показ тол
     assert res is not None
     assert res["id"] == 101
     assert res["height_cm"] == 198
+
