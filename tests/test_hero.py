@@ -19,6 +19,18 @@ API_URL = "https://akabab.github.io/superhero-api/api/all.json"
 TIME_OUT = 5
 
 
+def get_all(url):
+    try:
+        r = requests.get(url, timeout=TIME_OUT)
+        r.raise_for_status()
+        data = r.json()
+        if not isinstance(data, list):
+            pytest.skip("Запрос вернул не список.")
+        return data
+    except Exception as e:
+        pytest.skip(f"Не удалось достучаться до API: {e}")
+
+
 def test_tallest_male_without_work():
     res = get_tallest_hero("male", False, heroes=TEST_DATA)
     assert res is not None
