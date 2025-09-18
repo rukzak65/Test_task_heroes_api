@@ -30,6 +30,16 @@ def get_all(url):
     except Exception as e:
         pytest.skip(f"Не удалось достучаться до API: {e}")
 
+# проверка поля work.occupation в объекте героя h
+def _occupation_has_work(h):
+    occ = (h.get("work") or {}).get("occupation")
+    if not occ or not isinstance(occ, str):
+        return False
+    if occ.strip() in ("", "-"):
+        return False
+    return True
+
+
 
 def test_tallest_male_without_work():
     res = get_tallest_hero("male", False, heroes=TEST_DATA)
