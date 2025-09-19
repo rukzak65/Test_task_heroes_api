@@ -68,15 +68,16 @@ def _check_expected_from_live(heroes, gender, has_work):
             continue
 
         candidates.append((h, height_cm))
-        if not candidates:
-            return None
 
-        expected = max(candidates, key=lambda x: x[1])[0]
-        return {
-            "id": expected.get("id"),
-            "name": expected.get("name"),
-            "height_cm": parse_height_cm((expected.get("appearance") or {}).get("height")),
-        }
+    if not candidates:
+        return None
+
+    expected = max(candidates, key=lambda x: x[1])[0]
+    return {
+        "id": expected.get("id"),
+        "name": expected.get("name"),
+        "height_cm": parse_height_cm((expected.get("appearance") or {}).get("height")),
+    }
 
 #tests
 
