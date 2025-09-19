@@ -82,8 +82,8 @@ def _check_expected_from_live(heroes, gender, has_work):
 #tests
 
 # проверяем что апи работает
-def test_api():
-    heroes = get_all(API_URL)
+def test_api(heroes_api):
+    heroes = heroes_api
     assert isinstance(heroes, list) and len(heroes) > 0
 
 
