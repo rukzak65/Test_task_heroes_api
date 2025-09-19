@@ -1,6 +1,6 @@
 import pytest
 import requests
-from hero import get_tallest_hero
+from hero import get_tallest_hero, parse_height_cm
 
 # TEST_DATA = [
 #     {"id": 1, "name": "Alpha", "appearance": {"gender": "Male", "height": ["6'0", "183 cm"]}, "work": {"occupation": "Scientist"}},
@@ -39,12 +39,40 @@ def _occupation_has_work(h):
         return False
     return True
 
+#берёт из h поле appearance.gender
 def _gender_matches(h, target_gender):
     ap = h.get("appearance") or {}
     hero_gender = ap.get("gender", "")
     if not isinstance(hero_gender, str):
         return False
     return hero_gender.lower() == target_gender
+
+
+def _check_expected_from_live(heroes, gender, has_work):
+    target = gender.lower()
+    candidates = []
+    for h in heroes:
+        ap = h.get("appearance") or {}
+        hero_gender = ap.get("gender", "")
+        if not isinstance(hero_gender, str) or hero_gender.lower() != target:
+            continue
+
+        occ = (h.get("work") or {}).get("occupation")
+        work_ok = isinstance(occ, str) and occ.strip() not in ("", "-")
+        if has_work and not work_ok:
+            continue
+
+        height_cm = parse_height_cm(ap.get("height"))
+        if height_cm is None:
+            continue
+
+        candidates.append((h, height_cm))
+        expected = max(candidates, key=lambda x: x[1])[0]
+        return {
+            "id": expected.get("id"),
+            "name": expected.get("name"),
+            "height_cm": parse_height_cm((expected.get("appearance") or {}).get("height")),
+        }
 
 
 
