@@ -119,6 +119,13 @@ def test_get_tallest_female_with_and_without_work_matches_api():
     assert result_no_work["id"] == expected_no_work["id"]
     assert result_no_work["height_cm"] == expected_no_work["height_cm"]
 
+    expected_with_work = _check_expected_from_live(heroes, gender="female", has_work=True)
+    if expected_with_work is None:
+        pytest.skip("В live-данных не найдено female-героев с работой.")
+    result_with_work = get_tallest_hero("female", True)
+    assert result_with_work is not None
+    assert result_with_work["id"] == expected_with_work["id"]
+    assert result_with_work["height_cm"] == expected_with_work["height_cm"]
 
 
 # def test_tallest_male_without_work():
