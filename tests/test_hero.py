@@ -82,10 +82,21 @@ def _check_expected_from_live(heroes, gender, has_work):
 #tests
 
 # проверяем что апи работает
-@pytest.mark.integration
 def test_api():
     heroes = get_all(API_URL)
     assert isinstance(heroes, list) and len(heroes) > 0
+
+
+def test_get_tallest_male_without_work_matches_api():
+    heroes = get_all(API_URL)
+    expected = _check_expected_from_live(heroes, gender="male", has_work=False)
+    if expected is None:
+        pytest.skip("В live-данных не найдено подходящих male-героев.")
+    result = get_tallest_hero("male", False)
+    assert result is not None
+    assert result["id"] == expected["id"]
+    assert result["height_cm"] == expected["height_cm"]
+
 
 # def test_tallest_male_without_work():
 #     res = get_tallest_hero("male", False, heroes=TEST_DATA)
