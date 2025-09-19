@@ -39,6 +39,13 @@ def _occupation_has_work(h):
         return False
     return True
 
+def _gender_matches(h, target_gender):
+    ap = h.get("appearance") or {}
+    hero_gender = ap.get("gender", "")
+    if not isinstance(hero_gender, str):
+        return False
+    return hero_gender.lower() == target_gender
+
 
 
 def test_tallest_male_without_work():
