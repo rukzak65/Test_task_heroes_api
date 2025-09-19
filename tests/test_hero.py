@@ -87,7 +87,7 @@ def test_api():
     assert isinstance(heroes, list) and len(heroes) > 0
 
 
-def test_get_tallest_male_without_work_matches_api():
+def test_get_tallest_male_without_work_api():
     heroes = get_all(API_URL)
     expected = _check_expected_from_live(heroes, gender="male", has_work=False)
     if expected is None:
@@ -96,6 +96,29 @@ def test_get_tallest_male_without_work_matches_api():
     assert result is not None
     assert result["id"] == expected["id"]
     assert result["height_cm"] == expected["height_cm"]
+
+
+def test_get_tallest_male_with_work_api():
+    heroes = get_all(API_URL)
+    expected = _check_expected_from_live(heroes, gender="male", has_work=True)
+    if expected is None:
+        pytest.skip("В live-данных не найдено male-героев с работой.")
+    result = get_tallest_hero("male", True)
+    assert result is not None
+    assert result["id"] == expected["id"]
+    assert result["height_cm"] == expected["height_cm"]
+
+def test_get_tallest_female_with_and_without_work_matches_api():
+    heroes = get_all(API_URL)
+
+    expected_no_work = _check_expected_from_live(heroes, gender="female", has_work=False)
+    if expected_no_work is None:
+        pytest.skip("В live-данных не найдено female-героев.")
+    result_no_work = get_tallest_hero("female", False)
+    assert result_no_work is not None
+    assert result_no_work["id"] == expected_no_work["id"]
+    assert result_no_work["height_cm"] == expected_no_work["height_cm"]
+
 
 
 # def test_tallest_male_without_work():
