@@ -78,7 +78,13 @@ def _check_expected_from_live(heroes, gender, has_work):
             "height_cm": parse_height_cm((expected.get("appearance") or {}).get("height")),
         }
 
+#tests
 
+# проверяем что апи работает
+@pytest.mark.integration
+def test_api():
+    heroes = get_all(API_URL)
+    assert isinstance(heroes, list) and len(heroes) > 0
 
 # def test_tallest_male_without_work():
 #     res = get_tallest_hero("male", False, heroes=TEST_DATA)
